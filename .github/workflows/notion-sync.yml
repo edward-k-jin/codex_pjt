@@ -1,0 +1,31 @@
+name: Sync Notion on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notion-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm i @notionhq/client
+
+      - name: Sync to Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          VERCEL_PROD_URL: ${{ secrets.VERCEL_PROD_URL }}
+          PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+          GITHUB_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          PUBLISHED_AT: ${{ github.event.release.published_at }}
+        run: node .github/scripts/notion-release-sync.js
