@@ -15,7 +15,7 @@ jobs:
           node-version: "20"
 
       - run: npm init -y
-      - run: npm i @notionhq/client
+      - run: npm i @notionhq/client@^4
 
       - name: Sync to Notion
         env:
