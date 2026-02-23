@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: "20"
 
+      - run: npm init -y
       - run: npm i @notionhq/client
 
       - name: Sync to Notion
