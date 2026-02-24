@@ -1,52 +1,39 @@
-# QA Plan and Results Template
+# QA 운영 템플릿
 
-## Purpose
-Capture acceptance-criteria-based validation and regression results before release.
+## 문서 목적
+이 문서는 릴리즈 후보에 대해 PRD 수용 기준 검증과 회귀 테스트 결과를 기록하기 위한 템플릿이다.
 
-## Source of Truth Rule
-- `docs/PRD.md` defines acceptance criteria.
-- QA pass/fail is evaluated against PRD acceptance criteria first.
+## 오너 승인
+`[오너 승인] 게이트 6 승인 완료 - <오너 이름> - <연도-월-일>`
 
-## Owner Approval
-- Required phrase:
-  - `[Owner Approval] Gate 6 Approved by <Owner Name> on <YYYY-MM-DD>.`
+## 1) 릴리즈 후보 정보
+- 버전: 예: `v0.3.0-rc1`
+- 검증 날짜: 예: `2026-02-24`
+- 대상 환경: 예: `staging` 또는 `vercel preview`
+- 대상 커밋/PR: 예: `#123 / abcdef1`
+- 테스트 담당자: 예: `QA 에이전트`
 
-## Test Scope
-- Release/PR ID:
-- Build/Commit SHA:
-- Environment (local/staging/prod-preview):
-- In scope:
-- Out of scope:
-
-## Acceptance Criteria Coverage
-| AC ID (PRD) | Scenario | Test Type | Result (Pass/Fail) | Evidence |
-|---|---|---|---|---|
-| AC-01 |  | Manual/Unit/E2E |  |  |
-| AC-02 |  | Manual/Unit/E2E |  |  |
-
-## Functional Test Cases
-| Case ID | Given | When | Then | Result | Notes |
+## 2) PRD 수용 기준 검증
+| 수용 기준 ID | 검증 절차 | 기대 결과 | 실제 결과 | 판정(Pass/Fail) | 근거 링크 |
 |---|---|---|---|---|---|
-| QA-001 |  |  |  |  |  |
+| AC-01 | 예: 게스트로 진입 후 핵심 동작 수행 | 3단계 이내 완료 | 예: 2단계 완료 | Pass | 예: 테스트 영상 링크 |
+| AC-02 | 예: 로그인 업그레이드 후 데이터 병합 확인 | 기존 데이터 유지 | 예: 유지 확인 | Pass | 예: 스크린샷 링크 |
 
-## Regression Checklist
-- [ ] Critical user journey regression passed
-- [ ] Guest-first journey regression passed
-- [ ] Login-upgrade path regression passed
-- [ ] Existing bugfix non-regression confirmed
-- [ ] Backward compatibility spot-check completed
+## 3) 회귀 체크리스트
+- [ ] 기존 핵심 사용자 여정이 정상 동작한다.
+- [ ] 게스트 모드 저장/복원 동작이 유지된다.
+- [ ] 로그인 업그레이드 이후 데이터 유실이 없다.
+- [ ] 주요 폼의 유효성 검사/오류 메시지가 정상 동작한다.
+- [ ] 접근성 기본(포커스/라벨/명도 대비/키보드) 점검을 완료했다.
+- [ ] 브라우저 기본 범위(예: Chrome/Safari)에서 동작을 확인했다.
 
-## Non-Functional Checks
-- [ ] Performance sanity check completed
-- [ ] Accessibility smoke test completed
-- [ ] Error handling and fallback paths verified
-
-## Defect Log
-| Defect ID | Severity | Description | Status | Owner |
+## 4) 발견 이슈
+| 이슈 ID | 재현 절차 | 심각도(High/Med/Low) | 현재 상태(Open/Fixed) | 수정 PR |
 |---|---|---|---|---|
-| BUG-001 |  |  | Open/Closed |  |
+| BUG-001 | 예: 입력 후 저장 버튼 연타 시 중복 저장 발생 | Med | Open | 예: #130 |
+| BUG-002 | 예: iOS Safari에서 모달 닫기 버튼 포커스 누락 | Low | Fixed | 예: #131 |
 
-## Final QA Verdict
-- Verdict: Pass / Conditional Pass / Fail
-- Blocking issues:
-- Recommended release decision:
+## 5) 최종 판정
+- 최종 판정: 예: `Conditional Pass`
+- 차단 이슈: 예: `없음` 또는 `BUG-001 해결 필요`
+- 릴리즈 권고: 예: `경미 이슈 추적 조건으로 배포 진행 가능`

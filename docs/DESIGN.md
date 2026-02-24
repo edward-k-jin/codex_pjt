@@ -1,94 +1,93 @@
-# Design System and Spec Template
+# 디자인 시스템 운영 템플릿
 
-## Purpose
-Defines visual direction, design tokens, component rules, and motion constraints for implementation.
+## 문서 목적
+이 문서는 디자인 에이전트가 시각 원칙, 토큰, 컴포넌트, 모션, 구현 주의사항을 일관되게 기록하기 위한 템플릿이다.
 
-## Source of Truth Rule
-- `docs/PRD.md` is the product scope source of truth.
-- `docs/UX_FLOW.md` is the interaction flow source of truth.
-- Design decisions must trace back to both.
+## 오너 승인
+`[오너 승인] 게이트 3 승인 완료 - <오너 이름> - <연도-월-일>`
 
-## Owner Approval
-- Required phrase:
-  - `[Owner Approval] Gate 3 Approved by <Owner Name> on <YYYY-MM-DD>.`
+## 1) 디자인 원칙(Apple-like)
+1. 정제된 미니멀: 핵심 행동과 정보만 남기고 장식 요소를 최소화한다.
+2. 타이포 위계: 제목/본문/보조 텍스트를 명확한 크기와 굵기로 구분한다.
+3. 여백 중심 레이아웃: 콘텐츠 그룹 간 간격을 충분히 두어 인지 부하를 줄인다.
+4. 일관된 패턴: 동일한 목적에는 동일한 컴포넌트/상태 규칙을 적용한다.
+5. 포인트 컬러 1개: 기본 강조 색상은 한 가지로 유지한다.
+6. 절제된 모션: 사용자의 이해를 돕는 전환만 허용하고 과한 효과는 금지한다.
 
-## Apple-like Principles
-1. Minimal interfaces: remove non-essential UI.
-2. Typography hierarchy: clear, consistent title/body/caption scale.
-3. Generous spacing: emphasize readability and touch comfort.
-4. Consistency: same pattern for same intent across screens.
-5. Single point color: one accent color for primary emphasis.
-6. Restrained motion: purposeful transitions only.
+## 2) 토큰 정의
 
-## Color and Theme Rules
-- Neutral base palette:
-- Point color (single accent):
-- Semantic colors (success/warning/error/info):
-- Contrast minimum target: WCAG AA baseline.
-
-## Typography Rules
-- Font family:
-- Scale (Display/H1/H2/Body/Caption):
-- Line-height strategy:
-- Weight usage rules:
-
-## Spacing and Layout Rules
-- Base spacing unit:
-- Container widths:
-- Grid system:
-- Corner radius system:
-
-## Token Definitions
-```json
-{
-  "color": {
-    "bg": "",
-    "fg": "",
-    "accent": "",
-    "border": ""
-  },
-  "space": {
-    "xs": "",
-    "sm": "",
-    "md": "",
-    "lg": "",
-    "xl": ""
-  },
-  "type": {
-    "h1": "",
-    "h2": "",
-    "body": "",
-    "caption": ""
-  },
-  "radius": {
-    "sm": "",
-    "md": "",
-    "lg": ""
-  },
-  "motion": {
-    "fast": "",
-    "normal": "",
-    "slow": ""
-  }
-}
-```
-
-## Component Rules
-| Component | Variants | States | Accessibility Notes |
+### 2.1 타이포 토큰
+| 토큰 | 크기/행간 | 굵기 | 사용 위치 |
 |---|---|---|---|
-| Button |  | default/hover/focus/disabled/loading |  |
-| Input |  | default/focus/error/disabled |  |
-| Modal |  | open/closing |  |
+| `type.display` | 예: 40/48 | 700 | 랜딩 핵심 메시지 |
+| `type.h1` | 예: 32/40 | 700 | 페이지 제목 |
+| `type.body` | 예: 16/24 | 400 | 본문 설명 |
+| `type.caption` | 예: 13/18 | 400 | 보조 설명 |
 
-## Motion Rules
-- Allowed motion types: fade, slight translate, scale-in under threshold.
-- Duration guideline: 120ms-240ms for UI feedback, up to 320ms for layout shifts.
-- Easing guideline: standard and deceleration curves only.
-- Prohibited: decorative continuous motion without user value.
+### 2.2 간격 토큰
+| 토큰 | 값 | 용도 |
+|---|---|---|
+| `space.xs` | 예: 4px | 미세 간격 |
+| `space.sm` | 예: 8px | 컴포넌트 내부 간격 |
+| `space.md` | 예: 16px | 카드/섹션 기본 간격 |
+| `space.lg` | 예: 24px | 섹션 간 간격 |
+| `space.xl` | 예: 32px | 큰 블록 분리 |
 
-## Figma MCP Handoff
-- File URL:
-- Node IDs:
-- Code connect mapping:
-- Asset export notes:
-- Implementation caveats:
+### 2.3 색상 토큰
+| 토큰 | 예시 값 | 용도 |
+|---|---|---|
+| `color.bg` | 예: `#FFFFFF` | 기본 배경 |
+| `color.fg` | 예: `#111111` | 기본 텍스트 |
+| `color.accent` | 예: `#0A84FF` | 단일 포인트 컬러 |
+| `color.error` | 예: `#D92D20` | 오류 표시 |
+
+### 2.4 라운드/그림자 토큰
+| 토큰 | 예시 값 | 용도 |
+|---|---|---|
+| `radius.sm` | 예: 8px | 입력 필드 |
+| `radius.md` | 예: 12px | 카드/버튼 |
+| `shadow.card` | 예: `0 4px 16px rgba(0,0,0,0.08)` | 카드 강조 |
+
+## 3) 컴포넌트 규칙
+| 컴포넌트 | 변형(Variant) | 상태(State) | 행동 규칙 |
+|---|---|---|---|
+| 버튼 | Primary/Secondary/Ghost | 기본/호버/포커스/비활성/로딩 | Primary는 핵심 CTA에만 사용, 로딩 시 중복 클릭 차단 |
+| 입력 | Text/Password/Search | 기본/포커스/오류/비활성 | 라벨은 항상 표시, 오류 메시지는 필드 하단 고정 |
+| 카드 | Default/Selected | 기본/호버/선택 | 카드 전체 클릭 가능 영역과 보조 액션 영역 분리 |
+| 모달 | Confirm/Form | 열림/닫힘/처리중 | ESC와 닫기 버튼 지원, 포커스 트랩 적용 |
+| 토스트 | Success/Warning/Error/Info | 표시/사라짐 | 자동 닫힘 시간 일관 유지, 중요 오류는 수동 닫기 허용 |
+| 탭 | Primary/Segmented | 기본/활성/비활성 | 키보드 좌우 이동 지원, 활성 상태 명확 표시 |
+
+## 4) 모션 규칙
+- 전환 시간:
+  - 빠른 피드백: 120ms~180ms
+  - 일반 전환: 200ms~240ms
+  - 레이아웃 변화: 최대 320ms
+- 이징:
+  - 기본: ease-out 계열
+  - 진입: decelerate
+  - 이탈: accelerate
+- 허용:
+  - 페이드, 미세한 Y축 이동, 소규모 스케일 변화
+- 금지:
+  - 반복 장식 애니메이션, 과도한 바운스, 내용 이해를 방해하는 모션
+
+## 5) 피그마 링크/프레임 목록
+- 파일 링크: 예: `https://figma.com/design/<fileKey>/<fileName>`
+- 주요 프레임:
+  - `Home / Default`
+  - `Guest Upgrade Modal`
+  - `Dashboard / Logged-in`
+- Figma MCP 노드 ID 메모:
+  - 예: `12:34`, `56:78`
+
+## 6) 구현 노트
+- 반응형:
+  - 모바일 우선(min-width 기준 확장), 핵심 CTA는 첫 뷰포트 내 배치.
+- 상호작용:
+  - 비동기 액션은 로딩/성공/오류 상태를 모두 제공.
+- 접근성 기본:
+  - 포커스 표시: 키보드 탐색 시 항상 가시적으로 표현.
+  - 라벨: 입력 요소는 시각/프로그램적 라벨을 모두 제공.
+  - 명도 대비: 텍스트와 배경 대비는 WCAG AA 이상 유지.
+  - 키보드: 주요 기능은 마우스 없이 전부 수행 가능해야 함.

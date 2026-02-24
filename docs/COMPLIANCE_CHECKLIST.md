@@ -1,65 +1,63 @@
-# Compliance Checklist Template
+# 컴플라이언스 체크리스트 템플릿
 
-## Purpose
-Track minimum compliance checks for each release candidate.
+## 문서 목적
+이 문서는 릴리즈 전 필수 컴플라이언스 항목을 점검하고, 차단 사유와 수정 사항을 명확히 남기기 위한 템플릿이다.
 
-## Source of Truth Rule
-- Product scope and data usage context must match `docs/PRD.md`.
-- Compliance decisions must reference implemented behavior only.
+## 오너 승인
+`[오너 승인] 게이트 7 승인 완료 - <오너 이름> - <연도-월-일>`
 
-## Owner Approval
-- Required phrase:
-  - `[Owner Approval] Gate 7 Approved by <Owner Name> on <YYYY-MM-DD>.`
+## 1) 점검 대상 정보
+- 점검 버전/PR: 예: `v0.3.0-rc1 / #123`
+- 점검 일자: 예: `2026-02-24`
+- 점검 담당자: 예: `Compliance Agent`
+- 서비스 지역/대상: 예: `대한민국 / 일반 사용자`
 
-## Release Info
-- Release/PR:
-- Commit SHA:
-- Reviewer:
-- Review date:
+## 2) 개인정보 점검
+- 수집 최소화:
+  - [ ] 서비스 제공에 필수적인 정보만 수집한다.
+- 목적 고지:
+  - [ ] 수집 목적을 화면/정책 문서에 명확히 고지한다.
+- 보관:
+  - [ ] 보관 기간 및 보관 근거를 정의했다.
+- 삭제:
+  - [ ] 사용자 요청 시 삭제 절차를 제공한다.
+- 제삼자 제공:
+  - [ ] 제삼자 제공 여부와 제공 범위를 문서화했다.
 
-## 1) Privacy and Personal Data
-- [ ] Personal data categories are documented.
-- [ ] Data collection purpose is documented and limited.
-- [ ] Data retention/deletion policy exists.
-- [ ] Sensitive data storage and transport protections are in place.
-- [ ] User rights workflow (access/delete/correct) is defined.
+## 3) 추적/분석 도구 점검
+| 도구명 | 사용 목적 | 동의 필요 여부 | 해제 동선 |
+|---|---|---|---|
+| 예: GA4 | 사용성 분석 | 필요(지역 정책 따름) | 설정 > 개인정보 > 분석 해제 |
+| 예: Sentry | 오류 모니터링 | 불필요(정당한 이익 검토) | 설정 > 개인정보 > 오류 보고 해제 |
 
-## 2) Tracking and Analytics
-- [ ] Tracking events are documented.
-- [ ] Consent requirement is evaluated by region.
-- [ ] Non-essential tracking can be disabled where required.
-- [ ] Third-party SDK data sharing is reviewed.
+## 4) 저작권/라이선스 점검
+- 폰트:
+  - [ ] 라이선스 범위(웹 임베드/상업적 이용)를 확인했다.
+- 이미지/아이콘:
+  - [ ] 사용 권리와 출처 표기 의무를 확인했다.
+- 오픈소스 의존성:
+  - [ ] 금지 라이선스가 없는지 확인했다.
+  - [ ] 표시 의무(저작권/라이선스 고지)를 반영했다.
 
-## 3) Copyright and Licenses
-- [ ] All dependencies have acceptable licenses.
-- [ ] Fonts, icons, images, and media usage rights are verified.
-- [ ] Attribution obligations are satisfied.
-- [ ] Prohibited or copyleft-incompatible licenses are absent.
+## 5) 전자상거래/결제(해당 시)
+- [ ] 가격/세금/환불 정책을 사용자에게 명확히 고지한다.
+- [ ] 결제 단계에서 약관/정책 동의를 받을 수 있다.
+- [ ] 결제 실패/환불 처리 동선이 준비되어 있다.
+- [ ] 결제 대행사 역할 분담과 책임 경계를 문서화했다.
 
-## 4) E-commerce (if applicable)
-- [ ] Price, tax, shipping, and refund policy disclosures are accurate.
-- [ ] Terms at checkout are clearly presented.
-- [ ] Payment provider compliance boundary is documented.
-- [ ] Order confirmation and invoice requirements are met.
+## 6) 표시 광고/제휴(해당 시)
+- [ ] 광고/제휴 콘텐츠에 식별 표기를 제공한다.
+- [ ] 과장/오해 소지가 있는 문구를 제거했다.
+- [ ] 성과 주장(예: 1위, 최고)은 검증 가능한 근거를 갖는다.
 
-## 5) Advertising and Claims (if applicable)
-- [ ] Marketing claims are evidence-backed.
-- [ ] Paid promotion labeling/disclosure is present.
-- [ ] Before/after, ranking, or guarantee claims are substantiated.
+## 7) 접근성 기본 점검
+- [ ] 키보드만으로 주요 흐름을 수행할 수 있다.
+- [ ] 포커스 표시가 모든 상호작용 요소에서 보인다.
+- [ ] 입력 요소 라벨/오류 메시지가 프로그램적으로 연결된다.
+- [ ] 텍스트와 배경 명도 대비가 기준을 충족한다.
 
-## 6) Accessibility Baseline
-- [ ] Keyboard navigation works for core journeys.
-- [ ] Focus indicators are visible.
-- [ ] Form labels and errors are programmatically associated.
-- [ ] Color contrast meets baseline requirements.
-- [ ] Basic screen reader checks completed.
-
-## Risk Log
-| Risk ID | Area | Description | Severity | Mitigation | Owner | Status |
-|---|---|---|---|---|---|---|
-| COMP-001 |  |  |  |  |  | Open |
-
-## Compliance Verdict
-- Verdict: Pass / Conditional Pass / Fail
-- Blocking issues:
-- Required follow-up actions:
+## 8) 최종 판정
+- 최종 판정(통과/실패): 예: `통과`
+- 차단 사유: 예: `없음` 또는 `개인정보 삭제 API 미구현`
+- 수정 사항: 예: `광고성 문구 고지 위치 상단으로 이동`
+- 후속 액션 담당/기한: 예: `A7 / 2026-02-28`

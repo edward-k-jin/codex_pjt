@@ -1,46 +1,22 @@
-## Summary
-- What changed:
-- Why:
-- Scope included:
-- Scope excluded:
+## 변경 내용
+- 예: Gate 기반 운영 템플릿을 한글 표준 포맷으로 정리했습니다.
+- 예: 문서 구조를 통일하고 체크리스트 렌더링을 정상화했습니다.
 
-## Files Changed
-- `AGENTS.md` (updated)
-- `docs/UX_FLOW.md` (created)
-- `docs/DESIGN.md` (created)
-- `docs/QA.md` (created)
-- `docs/COMPLIANCE_CHECKLIST.md` (created)
+## 변경 이유
+- 예: 멀티 에이전트 협업 시 Gate 승인, 산출물 위치, 품질 기준을 일관되게 적용하기 위함입니다.
 
-## Gate Status
-- Gate 0 Intake:
-- Gate 1 PRD:
-- Gate 2 UX:
-- Gate 3 Design:
-- Gate 4 ADR:
-- Gate 5 Implementation:
-- Gate 6 QA:
-- Gate 7 Compliance:
-- Gate 8 Release:
+## 확인 방법
+1. 변경된 파일을 열어 헤더/목록/체크박스 렌더링이 정상인지 확인합니다.
+2. Gate 승인 문구 형식이 문서 전반에서 동일한지 확인합니다.
+3. PRD-UX-Design-QA-Compliance 연결 구조가 유지되는지 확인합니다.
 
-## Checklist
+## 화면 변경 스크린샷 또는 영상
+- 예: 해당 없음(문서 변경만 포함)
+
+## 체크리스트
 - [ ] PRD 수용 기준 충족
 - [ ] UX 플로우/상태 반영
 - [ ] 디자인 스펙/토큰 준수
 - [ ] 접근성 기본(포커스/라벨/명도 대비)
-- [ ] QA 문서 업데이트(필요시)
-- [ ] 컴플라이언스 영향 검토(필요시)
-
-## Validation
-- [ ] lint
-- [ ] typecheck
-- [ ] unit
-- [ ] build
-
-## Links
-- PRD:
-- UX Flow:
-- Design Spec/Figma:
-- QA Evidence:
-- Compliance Checklist:
-- Vercel Preview:
-- Vercel Production:
+- [ ] QA 문서 업데이트(필요 시 docs/QA.md)
+- [ ] 컴플라이언스 영향 검토(필요 시 docs/COMPLIANCE_CHECKLIST.md)

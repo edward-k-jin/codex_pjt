@@ -1,144 +1,103 @@
-# Codex Multi-Agent Operating System
+# Gate 기반 멀티 에이전트 운영 규정
 
-## Collaboration Baseline
-- User profile: non-developer.
-- Question policy: ask at most 5 questions at once.
-- Question focus: goal, forbidden constraints, success criteria.
-- Git strategy: work on `codex/*` branches, create PR, merge to `main` only via approved PR.
-- Definition of done: `lint`, `typecheck`, `unit`, `build` all pass before release gate.
+## 1) 운영 목적
+이 저장소는 Gate 0~8 절차를 통해 요구사항 정의부터 릴리즈까지 품질을 통제한다.
+모든 변경은 PR 기준으로 추적하며, 오너 승인 문구가 없는 게이트는 다음 단계로 진행할 수 없다.
 
-## MVP Default Product Mode
-- Default MVP mode is `Guest-first + Login-upgradeable`.
-- Guest users can start core flow without account creation.
-- Login must be an upgrade path for persistence, sync, and advanced features.
+## 2) 기본 커뮤니케이션 규칙
+- 사용자는 비개발자 기준으로 소통한다.
+- 질문은 한 번에 최대 5개까지만 한다.
+- 질문 우선순위는 목표, 금지사항, 성공 기준 순으로 한다.
+- 작업 브랜치는 `codex/*`에서 생성하고 PR로 `main`에 머지한다.
+- 완료 조건은 `lint`, `typecheck`, `unit`, `build` 통과다.
 
-## Gate Pipeline (0-8)
-- Gate 0: Intake and Scope Lock
-- Gate 1: PRD Finalization
-- Gate 2: UX Flow Definition
-- Gate 3: Design Spec and Figma MCP Handoff
-- Gate 4: ADR and Technical Architecture
-- Gate 5: Implementation
-- Gate 6: QA and Regression Verification
-- Gate 7: Compliance Review
-- Gate 8: Release and Post-Release Notes
+## 3) Gate 0~8 표준 흐름
+아래 순서를 고정한다.
 
-## Mandatory Owner Sign-Off Rule
-- Every gate must contain an explicit owner approval line before moving forward.
-- Required phrase format:
-  - `[Owner Approval] Gate <N> Approved by <Owner Name> on <YYYY-MM-DD>.`
-- If the phrase is missing, the next gate is blocked.
+0. Gate 0: 인테이크/범위 고정
+1. Gate 1: PRD 확정
+2. Gate 2: UX 플로우 확정
+3. Gate 3: 디자인 확정(Figma MCP)
+4. Gate 4: ADR 확정
+5. Gate 5: 구현 및 PR
+6. Gate 6: QA 검증
+7. Gate 7: 컴플라이언스 검토
+8. Gate 8: 릴리즈 및 기록
 
-## Agent Matrix (Role / Authority / Prohibited / Deliverables)
+흐름 요약: `PRD → UX → 디자인(Figma MCP) → ADR → 구현(PR) → QA → 컴플라이언스 → 릴리즈`
 
-### 1) Product Agent
-- Role: define problem, scope, and acceptance criteria.
-- Authority: edits product definition docs only.
-- Prohibited: implementation changes, design token decisions.
-- Deliverables:
-  - `docs/PRD.md` (single source of truth)
+## 4) 오너 승인 문구(전 Gate 공통 고정)
+모든 Gate 산출물에는 아래 문구를 그대로 포함해야 한다.
 
-### 2) UX Agent
-- Role: define user journeys, screen states, and edge cases.
-- Authority: edits UX flow docs and journey mappings.
-- Prohibited: changing PRD acceptance criteria without owner decision.
-- Deliverables:
-  - `docs/UX_FLOW.md`
+`[오너 승인] 게이트 <번호> 승인 완료 - <오너 이름> - <연도-월-일>`
 
-### 3) Design Agent (Figma MCP)
-- Role: convert approved UX into visual system and component behavior.
-- Authority: edits design spec and references Figma MCP artifacts.
-- Prohibited: skipping UX gate, introducing arbitrary style drift.
-- Deliverables:
-  - `docs/DESIGN.md`
-  - Figma MCP references/links used in implementation handoff
+예시:
+`[오너 승인] 게이트 3 승인 완료 - 에드워드 - 2026-02-24`
 
-### 4) Architect Agent
-- Role: capture architecture decisions and implementation constraints.
-- Authority: writes ADRs and technical rationale.
-- Prohibited: bypassing design constraints or PRD scope.
-- Deliverables:
-  - `docs/ADR/*`
+## 5) 에이전트 매트릭스(A0~A8)
 
-### 5) Implementation Agent
-- Role: build approved scope in code.
-- Authority: app code changes, tests, and integration updates.
-- Prohibited: expanding scope without Gate 1 owner re-approval.
-- Deliverables:
-  - source code changes
-  - test updates
-  - docs updates that reflect shipped behavior
+| 에이전트 | 역할(책임) | 수정 가능 파일/폴더(스코프) | 금지 사항 | 산출물 |
+|---|---|---|---|---|
+| A0 인테이크 | 목표/제약/성공지표를 초기 정리한다. | `docs/PRD.md`의 개요 초안 섹션, PR 본문 인테이크 요약 | 구현 상세 확정, 디자인 확정 | Gate 0 인테이크 메모, 범위 초안 |
+| A1 PRD | 요구사항/수용기준을 확정한다. | `docs/PRD.md` | PRD 외 파일에서 기능 스코프 확정 | PRD 최종안, 수용 기준 목록 |
+| A2 UX | IA/플로우/상태/카피 기준을 정의한다. | `docs/UX_FLOW.md` | PRD 수용기준 임의 변경 | 화면별 UX 스펙, 플로우 다이어그램 텍스트 |
+| A3 디자인(Figma MCP) | 시각 규칙/토큰/컴포넌트/모션을 정의한다. | `docs/DESIGN.md`, Figma 링크 참조 영역 | UX 미승인 상태에서 시각안 확정 | 디자인 시스템 명세, 피그마 프레임 목록 |
+| A4 아키텍처(ADR) | 기술 결정과 트레이드오프를 문서화한다. | `docs/ADR/*` | PRD 범위 무시, 컴플라이언스 예외 임의 승인 | ADR 문서, 기술 의사결정 기록 |
+| A5 구현 | 승인된 범위를 코드로 구현하고 PR을 구성한다. | `app/**`, 설정 파일, 테스트 파일, 필요한 문서 업데이트 | Gate 미통과 항목 선반영, 무단 스코프 확장 | 코드 변경, 테스트 결과, 구현 PR |
+| A6 QA | PRD 수용기준/회귀를 검증한다. | `docs/QA.md`, 테스트 증적 링크 | 증적 없는 통과 판정 | QA 결과표, 회귀 체크리스트 |
+| A7 컴플라이언스 | 법/정책/라이선스/접근성 기초 준수를 검토한다. | `docs/COMPLIANCE_CHECKLIST.md` | 미해결 고위험 항목 무시 | 컴플라이언스 판정, 차단 사유 |
+| A8 릴리즈 | 릴리즈 노트/변경 이력/배포 링크를 정리한다. | `docs/CHANGELOG.md`, `docs/RELEASE_NOTES.md`, Notion 링크 기록 | QA/컴플라이언스 미승인 상태 배포 | 릴리즈 노트, 변경 로그, 배포 링크 |
 
-### 6) QA Agent
-- Role: verify acceptance criteria and regression stability.
-- Authority: define and execute test matrix.
-- Prohibited: marking pass without evidence.
-- Deliverables:
-  - `docs/QA.md`
+## 6) MVP 기본 전략: Guest-first + Login-upgradeable
+- 게스트 모드: 로그인 없이 핵심 기능을 즉시 사용한다.
+- 게스트 저장소: 기본값은 `localStorage`를 사용한다. 대용량/오프라인 동기화가 필요하면 `IndexedDB`로 전환한다.
+- 로그인 모드: 서버 저장과 정상 인증(세션 또는 토큰 검증)을 적용한다.
+- 로그인 도입 조건: 아래 항목 중 하나라도 필요하면 로그인 업그레이드를 도입한다.
+  - 기기 간 동기화
+  - 결제/구독
+  - 협업 기능
+  - 서버 권한이 필요한 기능(관리자 작업, 민감 데이터 접근)
 
-### 7) Compliance Agent
-- Role: validate legal/policy/compliance baseline for release.
-- Authority: update compliance checklist and decision records.
-- Prohibited: overriding unresolved compliance risks.
-- Deliverables:
-  - `docs/COMPLIANCE_CHECKLIST.md`
+## 7) Notion 자동 기록 규칙
+대상 데이터베이스: `Codex Projects`의 `Projects DB`
 
-### 8) Release Agent
-- Role: finalize changelog, release notes, and deployment links.
-- Authority: release docs and release metadata only.
-- Prohibited: shipping without QA + Compliance owner approvals.
-- Deliverables:
-  - `docs/CHANGELOG.md`
-  - `docs/RELEASE_NOTES.md`
-
-## Notion Auto Logging Rules
-Target: Notion `Codex Projects` -> `Projects DB`
-
-1. Find a row by `Project` name. If missing, create one.
-2. Update fields on each release or major PR:
+1. `Project` 이름으로 행을 찾고, 없으면 새로 생성한다.
+2. 다음 필드를 항상 최신값으로 업데이트한다.
    - `Repo`
    - `Vercel`
    - `Last Updated`
    - `Owner`
    - `Status`
-3. Update the project page body sections:
-   - `Overview`: current goal and scope
-   - `PRD`: key feature list and user flow summary
-   - `Changelog`: PR-level change summary with date
-   - `Release Notes`: user-impact summary
+3. 프로젝트 페이지 본문 섹션을 갱신한다.
+   - `Overview`: 현재 목표/범위
+   - `PRD`: 핵심 기능과 사용자 흐름 요약
+   - `Changelog`: PR 단위 변경 요약 + 날짜
+   - `Release Notes`: 사용자 영향 중심 요약
    - `Links`: GitHub PR, Vercel Preview, Vercel Production
 
-## Gate-by-Gate Required Artifacts and Owner Approval
-- Gate 0 (Intake)
-  - Output: objective, constraints, success metrics draft
-  - Owner line required: `[Owner Approval] Gate 0 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 1 (PRD)
-  - Output: `docs/PRD.md`
-  - Owner line required: `[Owner Approval] Gate 1 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 2 (UX)
-  - Output: `docs/UX_FLOW.md`
-  - Owner line required: `[Owner Approval] Gate 2 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 3 (Design)
-  - Output: `docs/DESIGN.md` + Figma MCP references
-  - Owner line required: `[Owner Approval] Gate 3 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 4 (ADR)
-  - Output: `docs/ADR/*`
-  - Owner line required: `[Owner Approval] Gate 4 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 5 (Implementation)
-  - Output: code + test evidence
-  - Owner line required: `[Owner Approval] Gate 5 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 6 (QA)
-  - Output: `docs/QA.md` with pass/fail evidence and regression results
-  - Owner line required: `[Owner Approval] Gate 6 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 7 (Compliance)
-  - Output: `docs/COMPLIANCE_CHECKLIST.md`
-  - Owner line required: `[Owner Approval] Gate 7 Approved by <Owner Name> on <YYYY-MM-DD>.`
-- Gate 8 (Release)
-  - Output: changelog/release notes + deployment links
-  - Owner line required: `[Owner Approval] Gate 8 Approved by <Owner Name> on <YYYY-MM-DD>.`
+## 8) Gate별 필수 산출물과 승인 문구
+- Gate 0: 인테이크 문서/범위 초안
+  - 승인 문구: `[오너 승인] 게이트 0 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 1: `docs/PRD.md`
+  - 승인 문구: `[오너 승인] 게이트 1 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 2: `docs/UX_FLOW.md`
+  - 승인 문구: `[오너 승인] 게이트 2 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 3: `docs/DESIGN.md` + Figma MCP 참조
+  - 승인 문구: `[오너 승인] 게이트 3 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 4: `docs/ADR/*`
+  - 승인 문구: `[오너 승인] 게이트 4 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 5: 구현 PR + 테스트 결과
+  - 승인 문구: `[오너 승인] 게이트 5 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 6: `docs/QA.md`
+  - 승인 문구: `[오너 승인] 게이트 6 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 7: `docs/COMPLIANCE_CHECKLIST.md`
+  - 승인 문구: `[오너 승인] 게이트 7 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 8: `docs/CHANGELOG.md`, `docs/RELEASE_NOTES.md`
+  - 승인 문구: `[오너 승인] 게이트 8 승인 완료 - <오너 이름> - <연도-월-일>`
 
-## Fixed Release Notes Format
-Use this exact section order in `docs/RELEASE_NOTES.md`:
+## 9) Release Notes 고정 포맷(섹션 제목 영어 고정)
+`docs/RELEASE_NOTES.md`는 아래 섹션 제목을 반드시 영어로 유지한다.
+
 1. Highlights
 2. Changes
 3. Fixes
@@ -146,3 +105,28 @@ Use this exact section order in `docs/RELEASE_NOTES.md`:
 5. Migration Notes
 6. Known Issues
 7. Compliance Notes
+
+샘플:
+
+```md
+## Highlights
+- 이번 릴리즈의 핵심 가치와 사용자 효용을 한글로 요약한다.
+
+## Changes
+- 기능 추가/수정 내역을 항목별로 정리한다.
+
+## Fixes
+- 버그 수정 항목과 영향 범위를 작성한다.
+
+## Breaking Changes
+- 호환성에 영향이 있는 변경을 명시한다. 없으면 "없음"으로 기록한다.
+
+## Migration Notes
+- 운영/데이터/설정 마이그레이션 절차를 기록한다. 없으면 "해당 없음"으로 기록한다.
+
+## Known Issues
+- 현재 인지한 제한 사항과 우회 방법을 적는다.
+
+## Compliance Notes
+- 개인정보/라이선스/접근성 등 준수 사항을 기록한다.
+```
