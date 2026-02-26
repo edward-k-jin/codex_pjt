@@ -1,0 +1,4 @@
+name: notion-release-sync (OFF)
+
+# OFF state: This file is intentionally kept outside `.github/workflows`.
+# To re-enable, move it back to `.github/workflows/notion-sync.yml`.
