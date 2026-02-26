@@ -1,41 +1,175 @@
-# Codex + Notion Operating Guide
+# Gate 기반 멀티 에이전트 운영 규정 (공통 재사용 표준)
 
-## Communication Rules
-- The user is a non-developer.
-- Ask at most 5 questions at once.
-- Prioritize questions around goal, constraints (what is forbidden), and success criteria.
+## 1) 운영 목적
+이 저장소는 Gate 0~8 절차를 통해 요구사항 정의부터 릴리즈까지 품질을 통제한다.
+이 문서는 단일 프로젝트 전용이 아니라, 여러 프로젝트에서 재사용 가능한 운영 표준으로 사용한다.
+모든 변경은 PR 단위로 추적하며, 오너 승인 문구가 없는 Gate는 다음 단계로 진행할 수 없다.
 
-## Git Workflow
-- Work on `codex/*` branches.
-- Open a Pull Request from `codex/*` to `main`.
-- Merge to `main` only through PR review and approval.
+## 2) 기본 커뮤니케이션 규칙
+- 사용자는 비개발자 기준으로 소통한다.
+- 질문은 한 번에 최대 5개까지만 한다.
+- 질문 우선순위는 목표, 금지사항, 성공 기준 순으로 한다.
+- 작업 브랜치는 `codex/*`에서 생성하고 PR로 `main`에 머지한다.
+- 완료 조건은 `lint`, `typecheck`, `unit`, `build` 통과다.
 
-## Definition of Done
-- `lint` passes.
-- `typecheck` passes.
-- `unit` tests pass.
-- `build` passes.
+## 3) Gate 0~8 표준 흐름
+아래 순서를 고정한다.
 
-## Required Docs Artifacts
-- Keep `docs/PRD.md` up to date.
-- Keep `docs/ADR/*` up to date.
-- Keep `docs/CHANGELOG.md` up to date.
-- Keep `docs/RELEASE_NOTES.md` up to date.
+0. Gate 0: 계획 승인(Plan Mode)
+1. Gate 1: PRD 확정
+2. Gate 2: UX 플로우 확정
+3. Gate 3a: Design Research & Benchmark
+4. Gate 3b: Design Spec
+5. Gate 4: ADR 확정
+6. Gate 5: 구현 및 PR
+7. Gate 6: QA 검증
+8. Gate 7: 컴플라이언스 검토
+9. Gate 8: 릴리즈 및 기록
 
-## Notion Auto Logging Rules
-Target: Notion `Codex Projects` -> `Projects DB`
+흐름 요약: `PRD → UX → Design Research & Benchmark → Design Spec → ADR → 구현(PR) → QA → 컴플라이언스 → 릴리즈`
 
-1. Find row by `Project` name; if missing, create a new row.
-2. Update these properties on each run:
+## 4) 오너 승인 문구(전 Gate 공통 고정)
+모든 Gate 산출물에는 아래 문구를 그대로 포함해야 한다.
+
+`[오너 승인] 게이트 <번호> 승인 완료 - <오너 이름> - <연도-월-일>`
+
+예시:
+`[오너 승인] 게이트 3a 승인 완료 - 에드워드 - 2026-02-24`
+
+## 5) 에이전트 매트릭스(A0~A8)
+
+| 에이전트 | 역할(책임) | 수정 가능 파일/폴더(스코프) | 금지 사항 | 산출물 |
+|---|---|---|---|---|
+| A0 오케스트레이터(계획) | Gate 계획 수립, 트랙 분해, 승인 획득 | `AGENTS.md`, `docs/OPS/TODO.md`, PR 본문 | 승인 없는 Gate 진행, 파일 스코프 중복 배치 | 계획 체크리스트, 병렬 트랙 설계, 리스크 대응안 |
+| A1 PRD | 요구사항/수용기준 확정 | `docs/PRD.md` | PRD 외 파일에서 기능 스코프 확정 | PRD 최종안, 수용 기준 목록 |
+| A2 UX | IA/플로우/상태/카피 기준 정의 | `docs/UX_FLOW.md` | PRD 수용기준 임의 변경 | UX 스펙, 플로우 문서 |
+| A3 디자인 리서치/스펙 | Gate3a/3b 산출물 작성 및 규칙화 | `docs/DESIGN_RESEARCH.md`, `docs/DESIGN.md` | UX 미승인 상태 스펙 확정, 링크 수집만으로 종료 | 디자인 리서치 문서, 디자인 스펙 문서 |
+| A4 아키텍처(ADR) | 기술 결정/트레이드오프 문서화 | `docs/ADR/*` | PRD 범위 무시, 법무 리스크 무시 | ADR 문서, 기술 결정 기록 |
+| A5 구현 | 승인된 범위 코딩/테스트/PR 구성 | `app/**`, 설정/테스트 파일, 필요한 문서 | 미승인 범위 선반영, 과도한 리팩터 | 코드 변경, 테스트 결과, 구현 PR |
+| A6 QA | 수용기준/회귀 검증 | `docs/QA.md`, 테스트 증적 링크 | 증적 없는 통과 판정 | QA 결과표, 회귀 결과 |
+| A7 컴플라이언스 | 법/정책/라이선스/접근성 기초 준수 점검 | `docs/COMPLIANCE_CHECKLIST.md` | 미해결 고위험 항목 무시 | 컴플라이언스 판정, 차단 사유 |
+| A8 릴리즈 | 릴리즈 기록/변경 이력/배포 링크 정리 | `docs/CHANGELOG.md`, `docs/RELEASE_NOTES.md`, Notion 링크 기록 | QA/컴플라이언스 미승인 배포 | 릴리즈 노트, 변경 로그, 배포 링크 |
+
+## 6) Gate 0 계획 모드(Plan Mode) 필수 규칙
+Gate 0는 "계획 승인" 단계다.
+오케스트레이터는 Gate 0에서 반드시 아래 4가지를 작성하고 오너 승인을 받아야 한다.
+
+1. 작업 분해 체크리스트(최소 5개)
+2. 병렬 트랙 설계(각 트랙 담당 에이전트 + 수정 파일 스코프)
+3. 예상 리스크(법무/디자인/기술)와 대응
+4. Design Mode 선택(A/B/C)과 선택 근거
+
+Design Mode 표준:
+- Mode A: Minimal (감성/여백 중심)
+- Mode B: Balanced (기본값, 대부분 프로젝트)
+- Mode C: Dense (유틸/생산성/어드민/고밀도)
+
+PRD에는 반드시 `Design Mode` 섹션을 포함하고, 기본값은 B로 한다.
+
+예시 체크리스트 템플릿:
+- [ ] 요구사항 해석 완료
+- [ ] 산출물 파일 매핑 완료
+- [ ] 병렬 트랙 분해 완료
+- [ ] 리스크 분석 완료
+- [ ] Design Mode 선택 및 근거 작성 완료
+- [ ] 오너 승인 획득 완료
+
+## 7) 병렬 작업 규칙(강화)
+- 병렬 수행 시 동일 파일 동시 수정은 금지한다.
+- 병렬 트랙은 문서 작업(UX/디자인/법무/아키텍처)을 우선한다.
+- 개발 병렬은 기능 단위 PR로 분할하고, 겹치는 파일 영역을 최소화한다.
+- 충돌 가능성이 있는 변경은 사전 파일 스코프 선언 후 진행한다.
+
+## 8) 자기 개선 루프
+- 오너 피드백/수정이 발생하면 반드시 `docs/OPS/LESSONS.md`에 재발 방지 규칙을 한 줄 이상 추가한다.
+- 오케스트레이터는 각 Gate 완료 시 `docs/OPS/TODO.md` 진행 상태를 갱신한다.
+- 같은 유형의 실수가 2회 이상 반복되면 표준 규칙으로 상향해 AGENTS에 반영한다.
+
+## 9) 버그 처리 규칙(자율 수정)
+- 버그 리포트는 질문하기 전에 재현 절차를 먼저 만든다.
+- 가능하면 실패하는 테스트/재현을 먼저 확보한 뒤 수정한다.
+- 실패한 CI는 오너 지시 없이도 수정한다. 단, 변경 범위는 최소화한다.
+
+## 10) MVP 기본 전략: Guest-first + Login-upgradeable
+- 게스트 모드: 로그인 없이 핵심 기능을 즉시 사용한다.
+- 게스트 저장소: 기본값은 `localStorage`를 사용한다. 대용량/오프라인 동기화가 필요하면 `IndexedDB`로 전환한다.
+- 로그인 모드: 서버 저장과 정상 인증(세션 또는 토큰 검증)을 적용한다.
+- 로그인 도입 조건: 아래 항목 중 하나라도 필요하면 로그인 업그레이드를 도입한다.
+  - 기기 간 동기화
+  - 결제/구독
+  - 협업 기능
+  - 서버 권한이 필요한 기능(관리자 작업, 민감 데이터 접근)
+
+## 11) Notion 자동 기록 규칙
+대상 데이터베이스: `Codex Projects`의 `Projects DB`
+
+1. `Project` 이름으로 행을 찾고, 없으면 새로 생성한다.
+2. 다음 필드를 항상 최신값으로 업데이트한다.
    - `Repo`
    - `Vercel`
    - `Last Updated`
    - `Owner`
    - `Status`
-3. Update the project page body (template-backed sections):
-   - `Overview`: current goal and scope
-   - `PRD`: key feature list and user-flow summary
-   - `Changelog`: PR-level change summary with date
-   - `Release Notes`: user-impact-focused release summary
-   - `Links`: GitHub PR URL, Vercel Preview URL, Vercel Production URL
+3. 프로젝트 페이지 본문 섹션을 갱신한다.
+   - `Overview`: 현재 목표/범위
+   - `PRD`: 핵심 기능과 사용자 흐름 요약
+   - `Changelog`: PR 단위 변경 요약 + 날짜
+   - `Release Notes`: 사용자 영향 중심 요약
+   - `Links`: GitHub PR, Vercel Preview, Vercel Production
 
+## 12) Gate별 필수 산출물과 승인 문구
+- Gate 0: 계획 문서/트랙 분해/리스크 대응 (`docs/OPS/TODO.md` 갱신 포함)
+  - 승인 문구: `[오너 승인] 게이트 0 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 1: `docs/PRD.md`
+  - 승인 문구: `[오너 승인] 게이트 1 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 2: `docs/UX_FLOW.md`
+  - 승인 문구: `[오너 승인] 게이트 2 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 3a: `docs/DESIGN_RESEARCH.md`
+  - 승인 문구: `[오너 승인] 게이트 3a 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 3b: `docs/DESIGN.md`
+  - 승인 문구: `[오너 승인] 게이트 3b 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 4: `docs/ADR/*`
+  - 승인 문구: `[오너 승인] 게이트 4 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 5: 구현 PR + 테스트 결과
+  - 승인 문구: `[오너 승인] 게이트 5 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 6: `docs/QA.md`
+  - 승인 문구: `[오너 승인] 게이트 6 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 7: `docs/COMPLIANCE_CHECKLIST.md`
+  - 승인 문구: `[오너 승인] 게이트 7 승인 완료 - <오너 이름> - <연도-월-일>`
+- Gate 8: `docs/CHANGELOG.md`, `docs/RELEASE_NOTES.md`, `docs/OPS/LESSONS.md` 회고 반영
+  - 승인 문구: `[오너 승인] 게이트 8 승인 완료 - <오너 이름> - <연도-월-일>`
+
+## 13) Gate3a/3b 상세 규칙
+### Gate3a: Design Research & Benchmark
+- 입력: `docs/PRD.md`(확정)
+- 출력: `docs/DESIGN_RESEARCH.md`
+- 수행 규칙:
+  - PRD에 정의된 Design Mode(A/B/C)를 기준으로 벤치마킹을 수행한다.
+  - 벤치마크 10개를 반드시 포함한다. 각 항목은 `좋은 점 / 우리 제품 적용 / 리스크` 3줄 고정으로 작성한다.
+  - 패턴 분석 5개(서비스 유형 모듈 기반)를 반드시 포함한다.
+  - 적용 규칙 10개(결정문 형태)와 금지 패턴 5개를 반드시 포함한다.
+  - 접근성/컴플라이언스 훅(명도 대비, 포커스, 라벨, 터치 타겟, 개인정보 노출 위험, 표시광고 가능성 등)을 포함한다.
+  - 산출물은 링크 수집이 아니라 구현 가능한 규칙으로 압축해야 한다.
+- 완료 조건:
+  - `docs/DESIGN_RESEARCH.md`가 필수 섹션으로 채워져 있어야 한다.
+  - Gate3b에 반영할 규칙 목록이 명시되어 있어야 한다.
+
+### Gate3b: Design Spec
+- 입력: `docs/PRD.md` + `docs/DESIGN_RESEARCH.md`
+- 출력: `docs/DESIGN.md`
+- 수행 규칙:
+  - Apple-like 원칙(미니멀, 타이포 위계, 여백, 일관성, 포인트 컬러 1개, 절제된 모션)을 기본으로 한다.
+  - Design Mode(A/B/C)에 맞춰 정보 밀도와 레이아웃 규칙을 조정한다.
+  - 토큰(타이포/간격/색/라운드/그림자), 컴포넌트, 상태(기본/포커스/비활성/로딩/빈값/오류), 모션, 반응형 기준을 숫자/규칙으로 명시한다.
+  - Gate5 구현, Gate6 QA, Gate7 컴플라이언스에서 추적 가능한 결정문 형태로 작성한다.
+
+## 14) Release Notes 고정 포맷(섹션 제목 영어 고정)
+`docs/RELEASE_NOTES.md`는 아래 섹션 제목을 반드시 영어로 유지한다.
+
+1. Highlights
+2. Changes
+3. Fixes
+4. Breaking Changes
+5. Migration Notes
+6. Known Issues
+7. Compliance Notes
